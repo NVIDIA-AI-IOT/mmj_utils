@@ -73,8 +73,8 @@ class SchemaGenerator:
             self.frame_counter+=1
 
         timestamp = datetime.datetime.utcnow()
-        timestamp = timestamp.isoformat("T") + "Z"
-        sensor_schema = {"sensor":{"id":self.sensor_id, "type":self.sensor_type, "location":{"lat":self.sensor_loc[0], "lon":self.sensor_loc[1], "alt":self.sensor_loc[2]}}}
+        timestamp = timestamp.isoformat("T")[0:-3] + "Z"
+        #sensor_schema = {"sensor":{"id":self.sensor_id, "type":self.sensor_type, "location":{"lat":self.sensor_loc[0], "lon":self.sensor_loc[1], "alt":self.sensor_loc[2]}}}
         
         object_list = []
         if len(objects) != len(bboxes):
@@ -83,11 +83,11 @@ class SchemaGenerator:
         for i in range(len(objects)):
             box = bboxes[i]
             obj = objects[i]
-            object_schema = f"{box[0]}|{box[1]}|{box[2]}|{[box[3]]}|{obj}"
+            object_schema = f"{box[0]}|{box[1]}|{box[2]}|{box[3]}|{obj}"
             #object_schema = {"bbox": {"leftX":box[0], "topY":box[1],"rightX":box[2], "bottomY":box[3]}, "type":obj}
             object_list.append(object_schema)
     
-        frame_schema = {"version": "4.0", "id":frame_id, "timestamp":timestamp, "sensorId": self.sensor_id, "objects":object_list, "sensor":sensor_schema}
+        frame_schema = {"version": "4.0", "id":frame_id, "@timestamp":timestamp, "sensorId": self.sensor_id, "objects":object_list}
         frame_schema = json.dumps(frame_schema)
         return frame_schema
 
