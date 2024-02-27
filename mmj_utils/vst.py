@@ -116,18 +116,21 @@ class VST:
             none
 
         Returns:
-            rtsp_streams (list[str]): List containing RTSP URLs that are live in VST. 
+            rtsp_streams (list[dict(streamID:, name:, url:,)]): List containing stream information
         """
 
         self._update_streams()
         self.rtsp_streams = []
         for stream in self.streams:
-            for k,v in stream.items():
+            for streamID,v in stream.items():
+                stream_info = {"streamID":streamID}
                 for substream in v:
                     if substream["isMain"]:
                         url = substream["url"]
                         if url != "":
-                            self.rtsp_streams.append(url)
+                            stream_info["name"] = substream["name"]
+                            stream_info["url"] = url
+                            self.rtsp_streams.append(stream_info)
     
         return self.rtsp_streams
 
