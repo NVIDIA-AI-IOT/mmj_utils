@@ -124,7 +124,7 @@ class DetectionOverlayCUDA:
 
             box = [int(x) for x in box]
             box = tuple(box) 
-            color = self.cmap[self.object_classes[obj]]
+            color = self.cmap[self.object_classes[obj]%len(self.cmap)]
 
             if self.draw_bbox:
                 cudaDrawRect(image, box, line_color=color, line_width=self.bbox_width)
