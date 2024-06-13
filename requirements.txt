@@ -1,0 +1,10 @@
+redis
+matplotlib
+numpy
+torch
+fastapi
+pydantic
+pillow
+prometheus_client
+uvicorn
+
